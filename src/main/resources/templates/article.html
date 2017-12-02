@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <title th:text="${article.headline}"></title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+        <div>
+            <h1 th:text="${article.headline}">Headline</h1>
+            <img th:src="@{/images/{id}/content(id=${article.id})}"/>
+            <p th:text="${article.bodyText}">Text content</p>
+            <p th:text="${article.publishDate}">Date</p>
+            <div th:each="category : ${categories}">
+                <p th:text="${category.name}"/>
+            </div>
+        </div>
+    </body>
+</html>

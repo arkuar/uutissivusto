@@ -4,8 +4,25 @@
         <title>News</title>
         <meta charset="UTF-8"/>
     </head>
-    
+
     <body>
-        <div>TODO write content</div>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+
+        <div>
+            <h1>Add new article</h1>
+            <form th:action="@{/news}" method="POST" enctype="multipart/form-data" id="articleForm">
+                <p>Headline: <input name="headline"/></p>
+                <p>Lead paragraph: <input name="lead"/></p>
+                <p>Body text: <textarea name="bodytext"></textarea></p>
+                <p>Date: <input type="date" name="publishdate"/></p>
+                <p>Image: <input type="file" name="file" id="file"/></p>
+                <select name="categoryId">
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">category</option>
+                </select>
+                <input type="submit" value="Add"/>
+            </form>
+        </div>
     </body>
 </html>
