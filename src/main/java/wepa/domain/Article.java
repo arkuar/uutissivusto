@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +22,9 @@ public class Article extends AbstractPersistable<Long> {
     private byte[] image;
     private String bodyText;
     private LocalDate publishDate;
-    @ManyToMany(mappedBy = "articles")
+    @ManyToMany
     private List<Category> categories;
-    @ManyToOne
+    @ManyToMany
     private List<Author> writers;
     
     public List<Category> getCategories(){
