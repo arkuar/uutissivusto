@@ -23,7 +23,7 @@ public class Article extends AbstractPersistable<Long> {
     private byte[] image;
     private String bodyText;
     private LocalDate publishDate;
-    @ManyToMany
+    @ManyToMany(mappedBy = "articles")
     private List<Category> categories;
     @ManyToOne
     private List<Author> writers;

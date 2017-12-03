@@ -14,6 +14,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Author extends AbstractPersistable<Long> {
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "writers")
     private List<Article> articles;
 }
