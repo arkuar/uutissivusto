@@ -14,6 +14,6 @@ public class ProductionProfile {
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource dataSource(){
-        return (DataSource) DataSourceBuilder.create().build();
+        return DataSourceBuilder.create().build();
     }
 }
