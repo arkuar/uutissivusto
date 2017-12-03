@@ -5,7 +5,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
+    <head lang="fi">
         <title th:text="${article.headline}"></title>
         <meta charset="UTF-8"/>
     </head>
@@ -14,12 +14,17 @@ and open the template in the editor.
             <p>header with links etc</p>
         </header>
         <div>
-            <h1 th:text="${article.headline}">Headline</h1>
+            <h1 th:text="${article.headline}">otsikko</h1>
             <img th:src="@{/images/{id}/content(id=${article.id})}"/>
-            <p th:text="${article.bodyText}">Text content</p>
-            <p th:text="${article.publishDate}">Date</p>
+            <p th:text="${article.bodyText}">sisältö</p>
             <div th:each="category : ${categories}">
                 <p th:text="${category.name}"/>
+            </div>
+            <div>
+            <p th:each="writer : ${article.writers}">
+                <span th:text="${writer.name}">kirjoittaja</span>
+            </p>
+            <p th:text="${article.publishDate}">julkaisupäivä</p>
             </div>
         </div>
     </body>

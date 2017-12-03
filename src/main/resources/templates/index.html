@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
-        <title>News</title>
+    <head lang="fi">
+        <title>Uutissivusto</title>
         <meta charset="UTF-8"/>
     </head>
 
@@ -11,18 +11,12 @@
         </header>
 
         <div>
-            <h1>Add new article</h1>
-            <form th:action="@{/news}" method="POST" enctype="multipart/form-data" id="articleForm">
-                <p>Headline: <input name="headline"/></p>
-                <p>Lead paragraph: <input name="lead"/></p>
-                <p>Body text: <textarea name="bodytext"></textarea></p>
-                <p>Date: <input type="date" name="publishdate"/></p>
-                <p>Image: <input type="file" name="file" id="file"/></p>
-                <select name="categoryId">
-                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">category</option>
-                </select>
-                <input type="submit" value="Add"/>
-            </form>
+            <h1>Uusimmat uutiset</h1>
+            <div th:each="article : ${articles}">
+                <h1 th:text="${article.headline}">otsikko</h1>
+                <p th:text="${article.lead}">ingressi</p>
+                <img th:src="@{/images/{id}/content(id=${article.id})}"/>
+            </div>
         </div>
     </body>
 </html>
