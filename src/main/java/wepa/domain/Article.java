@@ -26,6 +26,7 @@ public class Article extends AbstractPersistable<Long> {
     private List<Category> categories;
     @ManyToMany
     private List<Author> writers;
+    private int count;
     
     public List<Category> getCategories(){
         if(this.categories == null){

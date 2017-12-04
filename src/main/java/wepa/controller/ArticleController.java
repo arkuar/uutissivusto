@@ -36,6 +36,7 @@ public class ArticleController {
     public String index(Model model) {
         PageRequest req = PageRequest.of(0, 5, Sort.Direction.DESC, "publishDate");
         model.addAttribute("articles", articleRepository.findAll(req));
+        model.addAttribute("categories", categoryRepository.findAll());
         return "index";
     }
 

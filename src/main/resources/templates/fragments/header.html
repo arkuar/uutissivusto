@@ -7,12 +7,13 @@
     <body>
 
         <header th:fragment="header">
-            <ul>
-                <li><a th:href="@{/}">Etusivu</a></li>
-                <li><a th:href="@{/categories}">Kategoriat</a></li>
-                <li><a th:href="@{/news/add}">Uusi uutinen</a></li>
-                <li><a th:href="@{/writers}">Kirjoittajat</a></li>
-            </ul>
+            <nav>
+                <a th:href="@{/}">Etusivu</a>
+                <a th:href="@{/news/add}">Uusi uutinen</a>
+                <a th:each="category : ${categories}">
+                    <a th:href="${category.name.toLowerCase()}" th:text="${category.name}">kategoria</a>
+                </a>
+            </nav>
         </header>
 
     </body>
