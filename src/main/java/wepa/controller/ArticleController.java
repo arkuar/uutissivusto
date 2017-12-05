@@ -59,7 +59,7 @@ public class ArticleController {
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")
     @ResponseBody
-    public byte[] get(@PathVariable Long id) {
+    public byte[] getImage(@PathVariable Long id) {
         if (articleRepository.existsById(id)) {
             Article article = articleRepository.getOne(id);
             return article.getImage();
@@ -67,7 +67,7 @@ public class ArticleController {
         return null;
     }
 
-    @GetMapping("/news/add")
+    @GetMapping("/news/new")
     public String add(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());

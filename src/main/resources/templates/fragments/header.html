@@ -9,9 +9,9 @@
         <header th:fragment="header">
             <nav>
                 <a th:href="@{/}">Etusivu</a>
-                <a th:href="@{/news/add}">Uusi uutinen</a>
+                <a th:href="@{/news/new}">Uusi uutinen</a>
                 <a th:each="category : ${categories}">
-                    <a th:href="${category.name.toLowerCase()}" th:text="${category.name}">kategoria</a>
+                    <a th:href="@{/{name}(name=${category.name.toLowerCase()})}" th:text="${category.name}">kategoria</a>
                 </a>
             </nav>
         </header>
