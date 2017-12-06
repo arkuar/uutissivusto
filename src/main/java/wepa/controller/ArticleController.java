@@ -34,8 +34,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String index(Model model) {
-        PageRequest req = PageRequest.of(0, 5, Sort.Direction.DESC, "publishDate");
-        model.addAttribute("articles", articleRepository.findAll(req));
+        articleService.getLatest(model);
         model.addAttribute("categories", categoryRepository.findAll());
         return "index";
     }
@@ -51,9 +50,11 @@ public class ArticleController {
     @GetMapping("/news/{id}")
     public String getOne(@PathVariable Long id, Model model) {
         Article article = articleRepository.getOne(id);
+        article.incrementCount();
+        articleRepository.save(article);
         model.addAttribute("article", articleRepository.getOne(id));
-        model.addAttribute("categories", article.getCategories());
-        model.addAttribute("authors", article.getWriters());
+        model.addAttribute("categories", categoryRepository.findAll());
+        articleService.getLatestAndPopular(model);
         return "article";
     }
 
@@ -72,5 +73,12 @@ public class ArticleController {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());
         return "new";
+    }
+
+    @GetMapping("/popular")
+    public String mostPopular(Model model) {
+        articleService.getMostPopular(model);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "popular";
     }
 }

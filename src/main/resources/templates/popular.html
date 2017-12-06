@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head lang="fi">
-        <title th:text="${category.name}"></title>
+        <title>Most read articles</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
         <header th:replace="fragments/header :: header">
             <p>header with links etc</p>
         </header>
-        <div th:each="article : ${articles}">
+        <div th:each="article : ${popular}">
             <a th:href="@{/news/{id}(id=${article.id})}">
-            <h1 th:text="${article.headline}">otsikko</h1>
-            <p th:text="${article.publishDate}">julkaisupäivä</p>
+            <h1 th:text="${article.headline}">header</h1>
+            <p th:text="${article.publishDate}">date</p>
             </a>
         </div>
     </body>

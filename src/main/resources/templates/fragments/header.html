@@ -8,8 +8,9 @@
 
         <header th:fragment="header">
             <nav>
-                <a th:href="@{/}">Etusivu</a>
-                <a th:href="@{/news/new}">Uusi uutinen</a>
+                <a th:href="@{/}">Latest news</a>
+                <a th:href="@{/news/new}">New article</a>
+                <a th:href="@{/popular}">Most read</a>
                 <a th:each="category : ${categories}">
                     <a th:href="@{/{name}(name=${category.name.toLowerCase()})}" th:text="${category.name}">kategoria</a>
                 </a>

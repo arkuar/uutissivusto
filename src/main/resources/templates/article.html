@@ -17,7 +17,7 @@ and open the template in the editor.
             <h1 th:text="${article.headline}">otsikko</h1>
             <img th:src="@{/images/{id}/content(id=${article.id})}"/>
             <p th:text="${article.bodyText}">sisältö</p>
-            <div th:each="category : ${categories}">
+            <div th:each="category : ${article.categories}">
                 <p th:text="${category.name}"/>
             </div>
             <div>
@@ -26,6 +26,20 @@ and open the template in the editor.
             </p>
             <p th:text="${article.publishDate}">julkaisupäivä</p>
             </div>
+        </div>
+        <div>
+            <h1>Most read</h1>
+            <a th:each="item : ${popular}">
+                <h2 th:text="${item.headline}"></h2>
+                <p th:text="${item.publishDate}"></p>
+            </a>
+        </div>
+        <div>
+            <h1>Latest news</h1>
+            <a th:each="item : ${latest}">
+                <h2 th:text="${item.headline}"></h2>
+                <p th:text="${item.publishDate}"></p>
+            </a>
         </div>
     </body>
 </html>

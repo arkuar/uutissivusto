@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head lang="fi">
-        <title>Uutissivusto</title>
+        <title>News</title>
         <meta charset="UTF-8"/>
     </head>
 
@@ -11,11 +11,11 @@
         </header>
 
         <div>
-            <h1>Uusimmat uutiset</h1>
-            <div th:each="article : ${articles}">
+            <h1>Latest news</h1>
+            <div th:each="article : ${latest}">
                 <a th:href="@{/news/{id}(id=${article.id})}">
-                <h1 th:text="${article.headline}">otsikko</h1>
-                <p th:text="${article.lead}">ingressi</p>
+                <h1 th:text="${article.headline}">headline</h1>
+                <p th:text="${article.lead}">lead</p>
                 <img th:src="@{/images/{id}/content(id=${article.id})}"/>
                 </a>
             </div>

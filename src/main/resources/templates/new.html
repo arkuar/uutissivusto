@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head lang="fi">
-        <title>Lisää uusi uutinen</title>
+        <title>Add new article</title>
         <meta charset="UTF-8"/>
     </head>
 
@@ -11,16 +11,18 @@
         </header>
 
         <div>
-            <h1>Lisää uutinen</h1>
+            <h1>Add new article</h1>
             <form th:action="@{/news}" method="POST" enctype="multipart/form-data" id="articleForm">
-                <p>Otsikko: <input name="headline"/></p>
-                <p>Ingressi: <input name="lead"/></p>
-                <p>Sisältö: <textarea name="bodytext"></textarea></p>
-                <p>Julkaisupäivä <input type="date" name="publishdate"/></p>
-                <p>Kuva: <input type="file" name="file" id="file"/></p>
+                <p>Headline: <input name="headline"/></p>
+                <p>Lead paragraph: <input name="lead"/></p>
+                <p>Text: <textarea name="bodytext"></textarea></p>
+                <p>Publishing date: <input type="date" name="publishdate"/></p>
+                <p>Image: <input type="file" name="file" id="file"/></p>
+                <p>Category</p>
                 <select name="categoryId">
                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">kategoria</option>
                 </select>
+                <p>Author</p>
                 <select name="authorId">
                     <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}">kirjoittaja</option>
                 </select>

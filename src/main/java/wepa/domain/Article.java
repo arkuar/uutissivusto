@@ -16,10 +16,12 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @Entity
 public class Article extends AbstractPersistable<Long> {
+
     private String headline;
     private String lead;
     @Lob
     private byte[] image;
+    @Lob
     private String bodyText;
     private LocalDate publishDate;
     @ManyToMany
@@ -27,18 +29,22 @@ public class Article extends AbstractPersistable<Long> {
     @ManyToMany
     private List<Author> writers;
     private int count;
-    
-    public List<Category> getCategories(){
-        if(this.categories == null){
+
+    public List<Category> getCategories() {
+        if (this.categories == null) {
             this.categories = new ArrayList<>();
         }
         return this.categories;
     }
-    
-    public List<Author> getWriters(){
-        if(this.writers == null){
+
+    public List<Author> getWriters() {
+        if (this.writers == null) {
             this.writers = new ArrayList<>();
         }
         return this.writers;
+    }
+
+    public void incrementCount() {
+        this.count++;
     }
 }
