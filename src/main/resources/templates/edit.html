@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="fi">
+        <title>Edit article</title>
+        <meta charset="UTF-8"/>
+    </head>
+
+    <body>
+        <header th:replace="fragments/header :: header">
+            <p>header with links etc</p>
+        </header>
+
+        <div>
+            <h1>Edit article</h1>
+            <form th:action="@{/news/{id}/edit(id=${article.id})}" method="POST" enctype="multipart/form-data" id="articleForm">
+                <input type="hidden" th:value="${article.id}" name="id"/>
+                <p>Headline: <input th:value="${article.headline}" name="headline"/></p>
+                <p>Lead paragraph: <input th:value="${article.lead}" name="lead"/></p>
+                <p>Text: <textarea rows="10" cols="50" th:text="${article.bodyText}" name="bodytext"></textarea></p>
+                <p>Publishing date: <input th:value="${article.publishDate}" type="datetime-local" name="publishdate"/></p>
+                <p>Image: <input type="file" name="file" id="file"/></p>
+                <input type="submit" value="Edit"/>
+            </form>
+        </div>
+        <div>
+            <h1>Add category to article</h1>
+            <form th:action="@{/news/{id}/edit/category(id=${article.id})}" method="POST">
+                <input type="hidden" th:value="${article.id}" name="id"/>
+                <select name="categoryId">
+                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">category</option>
+                </select>
+                <input type="submit" value="Add"/>
+            </form>
+        </div>
+        <div>
+            <h1>Add author to article</h1>
+            <form th:action="@{/news/{id}/edit/author(id=${article.id})}" method="POST">
+                <input type="hidden" th:value="${article.id}" name="id"/>
+                <select name="authorId">
+                    <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}">author</option>
+                </select>
+                <input type="submit" value="Add"/>
+            </form>
+        </div>
+    </body>
+</html>

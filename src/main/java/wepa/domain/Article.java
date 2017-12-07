@@ -1,6 +1,6 @@
 package wepa.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class Article extends AbstractPersistable<Long> {
     private byte[] image;
     @Lob
     private String bodyText;
-    private LocalDate publishDate;
+    private LocalDateTime publishDate;
     @ManyToMany
     private List<Category> categories;
     @ManyToMany

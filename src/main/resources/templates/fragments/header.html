@@ -12,8 +12,9 @@
                 <a th:href="@{/news/new}">New article</a>
                 <a th:href="@{/popular}">Most read</a>
                 <a th:each="category : ${categories}">
-                    <a th:href="@{/{name}(name=${category.name.toLowerCase()})}" th:text="${category.name}">kategoria</a>
+                    <a th:href="@{/{name}(name=${category.name.toLowerCase()})}" th:text="${category.name}">category</a>
                 </a>
+                <a th:if="${article != null}" th:href="@{/news/{id}/edit(id=${article.id})}">Edit</a>
             </nav>
         </header>
 

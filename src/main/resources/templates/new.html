@@ -15,8 +15,8 @@
             <form th:action="@{/news}" method="POST" enctype="multipart/form-data" id="articleForm">
                 <p>Headline: <input name="headline"/></p>
                 <p>Lead paragraph: <input name="lead"/></p>
-                <p>Text: <textarea name="bodytext"></textarea></p>
-                <p>Publishing date: <input type="date" name="publishdate"/></p>
+                <p>Text: <textarea rows="10" cols="50" name="bodytext"></textarea></p>
+                <p>Publishing date: <input type="datetime-local" name="publishdate"/></p>
                 <p>Image: <input type="file" name="file" id="file"/></p>
                 <p>Category</p>
                 <select name="categoryId">

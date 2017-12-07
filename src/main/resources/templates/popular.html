@@ -11,7 +11,7 @@
         <div th:each="article : ${popular}">
             <a th:href="@{/news/{id}(id=${article.id})}">
             <h1 th:text="${article.headline}">header</h1>
-            <p th:text="${article.publishDate}">date</p>
+            <p th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</p>
             </a>
         </div>
     </body>

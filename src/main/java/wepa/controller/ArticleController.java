@@ -1,10 +1,9 @@
 package wepa.controller;
 
-import java.time.LocalDate;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +39,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news")
-    public String addArticle(@RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate publishdate,
+    public String addArticle(@RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
             @RequestParam("file") MultipartFile file, @RequestParam Long categoryId,
             @RequestParam Long authorId) throws Exception {
         articleService.add(requestParams, publishdate, file, categoryId, authorId);
@@ -80,5 +79,37 @@ public class ArticleController {
         articleService.getMostPopular(model);
         model.addAttribute("categories", categoryRepository.findAll());
         return "popular";
+    }
+
+    @GetMapping("/news/{id}/edit")
+    public String editArticle(@PathVariable Long id, Model model) {
+        Article article = articleRepository.getOne(id);
+        model.addAttribute("article", article);
+        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute("authors", authorRepository.findAll());
+        return "edit";
+    }
+
+    @PostMapping("/news/{id}/edit")
+    public String updateArticle(@PathVariable Long id, @RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
+            @RequestParam("file") MultipartFile file) throws IOException {
+        articleService.edit(id, requestParams, publishdate, file);
+        return "redirect:/news/" + id;
+    }
+
+    @PostMapping("/news/{id}/edit/category")
+    public String addCategoryToArticle(@RequestParam Long categoryId, @PathVariable Long id) {
+        Article article = articleRepository.getOne(id);
+        article.getCategories().add(categoryRepository.getOne(categoryId));
+        articleRepository.save(article);
+        return "redirect:/news/" + id;
+    }
+
+    @PostMapping("/news/{id}/edit/author")
+    public String addAuthorToArticle(@RequestParam Long authorId, @PathVariable Long id) {
+        Article article = articleRepository.getOne(id);
+        article.getWriters().add(authorRepository.getOne(authorId));
+        articleRepository.save(article);
+        return "redirect:/news/" + id;
     }
 }

@@ -1,7 +1,7 @@
 package wepa.service;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +24,7 @@ public class ArticleService {
     @Autowired
     private AuthorRepository authorRepository;
 
-    public void add(Map<String, String> params, LocalDate publishdate, MultipartFile file,
+    public void add(Map<String, String> params, LocalDateTime publishdate, MultipartFile file,
             Long categoryId, Long authorId) throws IOException {
         Article article = new Article();
         article.setHeadline(params.get("headline"));
@@ -35,6 +35,18 @@ public class ArticleService {
         article.setCount(0);
         article.getCategories().add(categoryRepository.getOne(categoryId));
         article.getWriters().add(authorRepository.getOne(authorId));
+        articleRepository.save(article);
+    }
+
+    public void edit(Long id, Map<String, String> params, LocalDateTime publishdate, MultipartFile file) throws IOException {
+        Article article = articleRepository.getOne(id);
+        article.setHeadline(params.get("headline"));
+        article.setLead(params.get("lead"));
+        article.setBodyText(params.get("bodytext"));
+        article.setPublishDate(publishdate);
+        if (!file.isEmpty()) {
+            article.setImage(file.getBytes());
+        }
         articleRepository.save(article);
     }
 

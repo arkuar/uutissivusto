@@ -14,31 +14,25 @@ and open the template in the editor.
             <p>header with links etc</p>
         </header>
         <div>
-            <h1 th:text="${article.headline}">otsikko</h1>
+            <h1 th:text="${article.headline}">headline</h1>
             <img th:src="@{/images/{id}/content(id=${article.id})}"/>
-            <p th:text="${article.bodyText}">sisältö</p>
-            <div th:each="category : ${article.categories}">
-                <p th:text="${category.name}"/>
-            </div>
-            <div>
-            <p th:each="writer : ${article.writers}">
-                <span th:text="${writer.name}">kirjoittaja</span>
-            </p>
-            <p th:text="${article.publishDate}">julkaisupäivä</p>
-            </div>
+            <p th:text="${article.bodyText}">text</p>
+            <p th:each="category : ${article.categories}" th:text="${category.name}">categories</p>
+            <p th:each="writer : ${article.writers}" th:text="${writer.name}">authors</p>
+            <p th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</p>
         </div>
         <div>
             <h1>Most read</h1>
-            <a th:each="item : ${popular}">
+            <a th:each="item : ${popular}" th:href='@{/news/{id}(id=${item.id})}'>
                 <h2 th:text="${item.headline}"></h2>
-                <p th:text="${item.publishDate}"></p>
+                <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
             </a>
         </div>
         <div>
             <h1>Latest news</h1>
-            <a th:each="item : ${latest}">
+            <a th:each="item : ${latest}" th:href='@{/news/{id}(id=${item.id})}'>
                 <h2 th:text="${item.headline}"></h2>
-                <p th:text="${item.publishDate}"></p>
+                <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
             </a>
         </div>
     </body>
