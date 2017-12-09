@@ -38,6 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news")
+    @Transactional
     public String addArticle(@RequestParam Map<String, String> requestParams,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
             @RequestParam("file") MultipartFile file,
@@ -85,6 +86,7 @@ public class ArticleController {
     }
 
     @GetMapping("/news/{id}/edit")
+    @Transactional
     public String editArticle(@PathVariable Long id, Model model) {
         Article article = articleRepository.getOne(id);
         model.addAttribute("article", article);
@@ -94,6 +96,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news/{id}/edit")
+    @Transactional
     public String updateArticle(@PathVariable Long id, @RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
             @RequestParam("file") MultipartFile file) throws IOException {
         articleService.edit(id, requestParams, publishdate, file);
@@ -101,6 +104,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news/{id}/edit/category")
+    @Transactional
     public String addCategoryToArticle(@RequestParam Long categoryId, @PathVariable Long id) {
         Article article = articleRepository.getOne(id);
         article.getCategories().add(categoryRepository.getOne(categoryId));
@@ -109,6 +113,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news/{id}/edit/author")
+    @Transactional
     public String addAuthorToArticle(@RequestParam Long authorId, @PathVariable Long id) {
         Article article = articleRepository.getOne(id);
         article.getWriters().add(authorRepository.getOne(authorId));
@@ -117,6 +122,7 @@ public class ArticleController {
     }
 
     @PostMapping("/news/{id}/delete")
+    @Transactional
     public String deleteArticle(@PathVariable Long id, Model model) {
         articleRepository.deleteById(id);
         articleService.getLatest(model);
