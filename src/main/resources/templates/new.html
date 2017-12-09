@@ -38,13 +38,13 @@
                 </div>
                 <div class="form-group">
                 <label>Category</label><br/>
-                <select class="form-control" name="categoryId">
+                <select class="form-control" name="categoryId" multiple="multiple" required="required">
                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">kategoria</option>
                 </select>
                 </div>
                 <div class="form-group">
                 <label>Author</label><br/>
-                <select class="form-control" name="authorId">
+                <select class="form-control" name="authorId" multiple="multiple" required="required">
                     <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}">kirjoittaja</option>
                 </select>
                 </div>

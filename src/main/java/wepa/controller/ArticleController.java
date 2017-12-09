@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import wepa.domain.Article;
-import wepa.repository.ArticleRepository;
-import wepa.repository.AuthorRepository;
-import wepa.repository.CategoryRepository;
+import wepa.repository.*;
 import wepa.service.ArticleService;
 
 @Controller
@@ -39,10 +37,12 @@ public class ArticleController {
     }
 
     @PostMapping("/news")
-    public String addArticle(@RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
-            @RequestParam("file") MultipartFile file, @RequestParam Long categoryId,
-            @RequestParam Long authorId) throws Exception {
-        articleService.add(requestParams, publishdate, file, categoryId, authorId);
+    public String addArticle(@RequestParam Map<String, String> requestParams,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("categoryId") Long[] categoryIds,
+            @RequestParam("authorId") Long[] authorIds) throws Exception {
+        articleService.add(requestParams, publishdate, file, categoryIds, authorIds);
         return "redirect:/";
     }
 

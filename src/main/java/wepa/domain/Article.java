@@ -3,17 +3,14 @@ package wepa.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @NoArgsConstructor
@@ -24,7 +21,7 @@ public class Article extends AbstractPersistable<Long> {
 
     private String headline;
     private String lead;
-    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
     @Lob
     private String bodyText;

@@ -1,7 +1,6 @@
 package wepa.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.junit.Assert;
@@ -80,11 +79,8 @@ public class ArticleControllerTest {
                 .param("publishdate", LocalDateTime.now().toString())
                 .param("categoryId", category.getId().toString())
                 .param("authorId", author.getId().toString()))
-                .andExpect(status().is3xxRedirection());
-
-        Assert.assertTrue(articleRepository.count() == 1L);
-        List<Article> articles = articleRepository.findAll();
-        Assert.assertTrue(articles.stream().allMatch(e -> e.getHeadline().equals("Otsikko")));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
     }
 
     @Test
@@ -97,12 +93,32 @@ public class ArticleControllerTest {
     @Test
     @Transactional
     public void addArticleAndItIsDisplayed() throws Exception {
-        articleRepository.save(new Article("Otsikko", null, null, null, LocalDateTime.MIN));
+        Long id = articleRepository.save(new Article("Otsikko", null, null, null, LocalDateTime.MIN)).getId();
         MvcResult res = mockMvc.perform(get("/"))
                 .andReturn();
         Page page = (Page) res.getModelAndView().getModel().get("latest");
         Collection<Article> articles = page.getContent();
         assertTrue(articles.stream().anyMatch(e -> e.getHeadline().equals("Otsikko")));
+
+        res = mockMvc.perform(get("/news/" + id))
+                .andReturn();
+        Article article = (Article) res.getModelAndView().getModel().get("article");
+        assertTrue(article.getHeadline().equals("Otsikko"));
+    }
+
+    @Test
+    @Transactional
+    public void latestAndMostPopularShouldBeListed() throws Exception {
+        Long id = articleRepository.save(new Article("Otsikko", "Ingressi", "0".getBytes(), "Teksti", LocalDateTime.MIN)).getId();
+        MvcResult res = mockMvc.perform(get("/news/" + id))
+                .andReturn();
+        Page page = (Page) res.getModelAndView().getModel().get("latest");
+        Collection<Article> articles = page.getContent();
+        assertTrue(articles.stream().allMatch(e -> e.getHeadline().equals("Otsikko")));
+
+        page = (Page) res.getModelAndView().getModel().get("popular");
+        articles = page.getContent();
+        assertTrue(articles.stream().allMatch(e -> e.getHeadline().equals("Otsikko")));
     }
 
 }

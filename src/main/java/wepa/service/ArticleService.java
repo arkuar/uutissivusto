@@ -29,15 +29,19 @@ public class ArticleService {
 
     @Transactional
     public void add(Map<String, String> params, LocalDateTime publishdate, MultipartFile file,
-            Long categoryId, Long authorId) throws IOException {
+            Long[] categoryIds, Long[] authorIds) throws IOException {
         Article article = new Article();
         article.setHeadline(params.get("headline"));
         article.setLead(params.get("lead"));
         article.setBodyText(params.get("bodytext"));
         article.setPublishDate(publishdate);
         article.setImage(file.getBytes());
-        article.getCategories().add(categoryRepository.getOne(categoryId));
-        article.getWriters().add(authorRepository.getOne(authorId));
+        for (Long i : categoryIds) {
+            article.getCategories().add(categoryRepository.getOne(i));
+        }
+        for (Long i : authorIds) {
+            article.getWriters().add(authorRepository.getOne(i));
+        }
         if (validationService.validateArticle(article)) {
             articleRepository.save(article);
         }
