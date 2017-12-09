@@ -3,6 +3,9 @@
     <head lang="fi">
         <title>Add new article</title>
         <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -10,23 +13,42 @@
             <p>header with links etc</p>
         </header>
 
-        <div>
+        <div class="container-fluid">
             <h1>Add new article</h1>
             <form th:action="@{/news}" method="POST" enctype="multipart/form-data" id="articleForm">
-                <p>Headline: <input name="headline"/></p>
-                <p>Lead paragraph: <input name="lead"/></p>
-                <p>Text: <textarea rows="10" cols="50" name="bodytext"></textarea></p>
-                <p>Publishing date: <input type="datetime-local" name="publishdate"/></p>
-                <p>Image: <input type="file" name="file" id="file"/></p>
-                <p>Category</p>
-                <select name="categoryId">
+                <div class="form-group">
+                    <label>Headline:</label>
+                    <input type="text" name="headline"/>
+                </div>
+                <div class="form-group">
+                    <label>Lead paragraph:</label>
+                    <input type="text" name="lead"/>
+                </div>
+                <div class="form-group">
+                    <label>Text:</label><br/>
+                    <textarea class="form-control" rows="10" name="bodytext"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Publishing date:</label>
+                    <input type="datetime-local" name="publishdate"/>
+                </div>
+                <div class="form-group">
+                    <label>Image:</label>
+                    <input type="file" name="file" id="file"/>
+                </div>
+                <div class="form-group">
+                <label>Category</label><br/>
+                <select class="form-control" name="categoryId">
                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">kategoria</option>
                 </select>
-                <p>Author</p>
-                <select name="authorId">
+                </div>
+                <div class="form-group">
+                <label>Author</label><br/>
+                <select class="form-control" name="authorId">
                     <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}">kirjoittaja</option>
                 </select>
-                <input type="submit" value="Add"/>
+                </div>
+                <input type="submit" class="btn btn-default" value="Add"/>
             </form>
         </div>
     </body>

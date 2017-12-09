@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -111,5 +112,13 @@ public class ArticleController {
         article.getWriters().add(authorRepository.getOne(authorId));
         articleRepository.save(article);
         return "redirect:/news/" + id;
+    }
+
+    @PostMapping("/news/{id}/delete")
+    public String deleteArticle(@PathVariable Long id, Model model) {
+        articleRepository.deleteById(id);
+        articleService.getLatest(model);
+        model.addAttribute("categories", categoryRepository.findAll());
+        return "redirect:/";
     }
 }

@@ -3,15 +3,19 @@
     <head lang="fi">
         <title>Most read articles</title>
         <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
     <body>
         <header th:replace="fragments/header :: header">
             <p>header with links etc</p>
         </header>
-        <div th:each="article : ${popular}">
+        <h1>Most popular articles</h1>
+        <div class="container-fluid" th:each="article : ${popular}">
             <a th:href="@{/news/{id}(id=${article.id})}">
-            <h1 th:text="${article.headline}">header</h1>
-            <p th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</p>
+                <h1 th:text="${article.headline}">header</h1>
+                <p th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</p>
             </a>
         </div>
     </body>

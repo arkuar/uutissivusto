@@ -3,6 +3,9 @@
     <head lang="fi">
         <title>News</title>
         <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -10,13 +13,13 @@
             <p>header with links etc</p>
         </header>
 
-        <div>
+        <div class="container-fluid">
             <h1>Latest news</h1>
-            <div th:each="article : ${latest}">
+            <div class="jumbotron" th:each="article : ${latest}">
                 <a th:href="@{/news/{id}(id=${article.id})}">
-                <h1 th:text="${article.headline}">headline</h1>
-                <p th:text="${article.lead}">lead</p>
-                <img th:src="@{/images/{id}/content(id=${article.id})}"/>
+                    <h1 th:text="${article.headline}">headline</h1>
+                    <p th:text="${article.lead}">lead</p>
+                    <img th:src="@{/images/{id}/content(id=${article.id})}"/>
                 </a>
             </div>
         </div>

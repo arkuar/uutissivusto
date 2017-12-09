@@ -16,8 +16,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @Entity
 public class Article extends AbstractPersistable<Long> {
-
-    private String headline;
+    private String headline;    
     private String lead;
     @Lob
     private byte[] image;

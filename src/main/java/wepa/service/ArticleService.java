@@ -23,6 +23,8 @@ public class ArticleService {
     private CategoryRepository categoryRepository;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private ValidationService validationService;
 
     public void add(Map<String, String> params, LocalDateTime publishdate, MultipartFile file,
             Long categoryId, Long authorId) throws IOException {
@@ -35,7 +37,9 @@ public class ArticleService {
         article.setCount(0);
         article.getCategories().add(categoryRepository.getOne(categoryId));
         article.getWriters().add(authorRepository.getOne(authorId));
-        articleRepository.save(article);
+        if (validationService.validateArticle(article)) {
+            articleRepository.save(article);
+        }
     }
 
     public void edit(Long id, Map<String, String> params, LocalDateTime publishdate, MultipartFile file) throws IOException {
