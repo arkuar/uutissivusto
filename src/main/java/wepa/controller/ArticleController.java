@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,7 @@ public class ArticleController {
     }
 
     @GetMapping("/news/{id}")
+    @Transactional
     public String getOne(@PathVariable Long id, Model model) {
         Article article = articleRepository.getOne(id);
         article.incrementCount();
@@ -59,6 +61,7 @@ public class ArticleController {
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")
     @ResponseBody
+    @Transactional
     public byte[] getImage(@PathVariable Long id) {
         if (articleRepository.existsById(id)) {
             Article article = articleRepository.getOne(id);
