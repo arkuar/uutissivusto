@@ -22,14 +22,9 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Article extends AbstractPersistable<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
     private String headline;
     private String lead;
-    @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
+    //@Lob
     private byte[] image;
     @Lob
     private String bodyText;
@@ -39,8 +34,8 @@ public class Article extends AbstractPersistable<Long> {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> writers;
     private int count;
-    
-    public Article(String headline, String lead, byte[] image, String bodyText, LocalDateTime publishDate){
+
+    public Article(String headline, String lead, byte[] image, String bodyText, LocalDateTime publishDate) {
         this.headline = headline;
         this.lead = lead;
         this.image = image;

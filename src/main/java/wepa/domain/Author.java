@@ -19,9 +19,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class Author extends AbstractPersistable<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private String name;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "writers")
     private List<Article> articles;
@@ -30,6 +27,5 @@ public class Author extends AbstractPersistable<Long> {
         this.name = name;
         this.articles = new ArrayList<>();
     }
-    
-    
+
 }
