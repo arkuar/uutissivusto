@@ -1,6 +1,7 @@
 package wepa.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.junit.Assert;
@@ -22,7 +23,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import wepa.domain.Article;
+import wepa.domain.Author;
+import wepa.domain.Category;
 import wepa.repository.ArticleRepository;
+import wepa.repository.AuthorRepository;
+import wepa.repository.CategoryRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -32,6 +37,10 @@ public class ArticleControllerTest {
     private WebApplicationContext webAppContext;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     private MockMvc mockMvc;
 
@@ -56,6 +65,8 @@ public class ArticleControllerTest {
     @Test
     @Transactional
     public void addArticleWorks() throws Exception {
+        categoryRepository.save(new Category(1L, "Kategoria", new ArrayList<>()));
+        authorRepository.save(new Author(2L, "Kirjoittaja", new ArrayList<>()));
         MockMultipartFile file = new MockMultipartFile("file", "name", null, "a".getBytes());
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/news")
                 .file(file)
@@ -64,7 +75,7 @@ public class ArticleControllerTest {
                 .param("bodytext", "teksti")
                 .param("publishdate", LocalDateTime.now().toString())
                 .param("categoryId", "1")
-                .param("authorId", "1"))
+                .param("authorId", "2"))
                 .andExpect(status().is3xxRedirection());
 
         Article article = articleRepository.getOne(articleRepository.count() + 1);
@@ -81,6 +92,8 @@ public class ArticleControllerTest {
     @Test
     @Transactional
     public void addArticleAndItIsDisplayed() throws Exception {
+        categoryRepository.save(new Category(1L, "Kategoria", new ArrayList<>()));
+        authorRepository.save(new Author(2L, "Kirjoittaja", new ArrayList<>()));
         MockMultipartFile file = new MockMultipartFile("file", "name", null, "bar".getBytes());
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/news")
                 .file(file)
