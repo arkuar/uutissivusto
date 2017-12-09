@@ -1,7 +1,9 @@
 package wepa.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -22,6 +24,11 @@ public class Category extends AbstractPersistable<Long> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
     private List<Article> articles;
+
+    public Category(String name) {
+        this.name = name;
+        this.articles = new ArrayList<>();
+    }
 }

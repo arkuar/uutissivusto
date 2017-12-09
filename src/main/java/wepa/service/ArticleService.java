@@ -3,6 +3,7 @@ package wepa.service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,6 +27,7 @@ public class ArticleService {
     @Autowired
     private ValidationService validationService;
 
+    @Transactional
     public void add(Map<String, String> params, LocalDateTime publishdate, MultipartFile file,
             Long categoryId, Long authorId) throws IOException {
         Article article = new Article();
@@ -34,7 +36,6 @@ public class ArticleService {
         article.setBodyText(params.get("bodytext"));
         article.setPublishDate(publishdate);
         article.setImage(file.getBytes());
-        article.setCount(0);
         article.getCategories().add(categoryRepository.getOne(categoryId));
         article.getWriters().add(authorRepository.getOne(authorId));
         if (validationService.validateArticle(article)) {

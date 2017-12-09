@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,6 +20,7 @@ import wepa.repository.CategoryRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureTestDatabase
 public class CategoryControllerTest {
 
     @Autowired
@@ -36,7 +38,7 @@ public class CategoryControllerTest {
     @Test
     @Transactional
     public void statusOK() throws Exception {
-        categoryRepository.save(new Category(1L, "Test", new ArrayList<>()));
+        categoryRepository.save(new Category("Test"));
         mockMvc.perform(get("/test"))
                 .andExpect(status().isOk());
     }

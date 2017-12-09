@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Lob;
@@ -31,11 +32,20 @@ public class Article extends AbstractPersistable<Long> {
     @Lob
     private String bodyText;
     private LocalDateTime publishDate;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Category> categories;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Author> writers;
     private int count;
+    
+    public Article(String headline, String lead, byte[] image, String bodyText, LocalDateTime publishDate){
+        this.headline = headline;
+        this.lead = lead;
+        this.image = image;
+        this.bodyText = bodyText;
+        this.publishDate = publishDate;
+        this.count = 0;
+    }
 
     public List<Category> getCategories() {
         if (this.categories == null) {

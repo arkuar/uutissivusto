@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.mock.web.MockMultipartFile;
@@ -31,6 +32,7 @@ import wepa.repository.CategoryRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureTestDatabase
 public class ArticleControllerTest {
 
     @Autowired
@@ -65,8 +67,10 @@ public class ArticleControllerTest {
     @Test
     @Transactional
     public void addArticleWorks() throws Exception {
-        categoryRepository.save(new Category(1L, "Kategoria", new ArrayList<>()));
-        authorRepository.save(new Author(2L, "Kirjoittaja", new ArrayList<>()));
+        Author author = new Author("Author");
+        authorRepository.save(author);
+        Category category = new Category("Category");
+        categoryRepository.save(category);
         MockMultipartFile file = new MockMultipartFile("file", "name", null, "a".getBytes());
         mockMvc.perform(MockMvcRequestBuilders.fileUpload("/news")
                 .file(file)
@@ -74,12 +78,13 @@ public class ArticleControllerTest {
                 .param("lead", "ingressi")
                 .param("bodytext", "teksti")
                 .param("publishdate", LocalDateTime.now().toString())
-                .param("categoryId", "1")
-                .param("authorId", "2"))
+                .param("categoryId", category.getId().toString())
+                .param("authorId", author.getId().toString()))
                 .andExpect(status().is3xxRedirection());
 
-        Article article = articleRepository.getOne(articleRepository.count() + 1);
-        Assert.assertTrue(article.getHeadline().equals("Otsikko"));
+        Assert.assertTrue(articleRepository.count() == 1L);
+        List<Article> articles = articleRepository.findAll();
+        Assert.assertTrue(articles.stream().allMatch(e -> e.getHeadline().equals("Otsikko")));
     }
 
     @Test
@@ -92,19 +97,7 @@ public class ArticleControllerTest {
     @Test
     @Transactional
     public void addArticleAndItIsDisplayed() throws Exception {
-        categoryRepository.save(new Category(1L, "Kategoria", new ArrayList<>()));
-        authorRepository.save(new Author(2L, "Kirjoittaja", new ArrayList<>()));
-        MockMultipartFile file = new MockMultipartFile("file", "name", null, "bar".getBytes());
-        mockMvc.perform(MockMvcRequestBuilders.fileUpload("/news")
-                .file(file)
-                .param("headline", "Otsikko")
-                .param("lead", "ingressi")
-                .param("bodytext", "teksti")
-                .param("publishdate", LocalDateTime.now().toString())
-                .param("categoryId", "1")
-                .param("authorId", "1"))
-                .andExpect(status().is3xxRedirection());
-
+        articleRepository.save(new Article("Otsikko", null, null, null, LocalDateTime.MIN));
         MvcResult res = mockMvc.perform(get("/"))
                 .andReturn();
         Page page = (Page) res.getModelAndView().getModel().get("latest");
