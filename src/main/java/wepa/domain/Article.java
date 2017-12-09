@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
@@ -28,6 +29,7 @@ public class Article extends AbstractPersistable<Long> {
     private String headline;
     private String lead;
     @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] image;
     @Lob
     private String bodyText;
