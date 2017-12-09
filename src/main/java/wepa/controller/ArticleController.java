@@ -28,7 +28,7 @@ public class ArticleController {
     private AuthorRepository authorRepository;
     @Autowired
     private ArticleService articleService;
-
+    
     @GetMapping("/")
     public String index(Model model) {
         articleService.getLatest(model);
