@@ -24,7 +24,7 @@ public class Article extends AbstractPersistable<Long> {
 
     private String headline;
     private String lead;
-    //@Lob
+    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
     private byte[] image;
     @Lob
     private String bodyText;
