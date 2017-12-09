@@ -18,10 +18,7 @@ public class ValidationService {
     private AuthorRepository authorRepository;
 
     public boolean validateArticle(Article article) {
-        if (article.getHeadline().isEmpty() || article.getLead().isEmpty() || article.getBodyText().isEmpty()
-                || article.getPublishDate() == null || article.getImage() == null) {
-            return false;
-        }
-        return true;
+        return !(article.getHeadline().isEmpty() || article.getLead().isEmpty() || article.getBodyText().isEmpty()
+                || article.getPublishDate() == null || article.getImage() == null);
     }
 }
