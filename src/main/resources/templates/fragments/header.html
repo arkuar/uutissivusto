@@ -43,7 +43,7 @@
                             <a th:href="@{/news/new}">New article</a>
                         </li>
                         <li>
-                            <a th:if="${article != null}" th:href="@{/news/{id}/edit(id=${article.id})}">Edit</a>
+                            <a th:if="${article != null}" th:href="@{/news/{id}/edit(id=${article.getId()})}">Edit</a>>
                         </li>
                         <li><a href="#">Log in</a></li>
                     </ul>
