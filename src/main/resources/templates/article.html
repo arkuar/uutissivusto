@@ -11,33 +11,42 @@ and open the template in the editor.
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <style>
+            .col-md-4{
+                background-color: #E6E6FA;
+            }
+        </style>
     </head>
     <body>
         <header th:replace="fragments/header :: header">
             <p>header with links etc</p>
         </header>
         <div class="container-fluid">
-            <h1 th:text="${article.headline}">headline</h1>
-            <img th:src="@{/images/{id}/content(id=${article.id})}"/>
-            <p th:text="${article.bodyText}">text</p>
-            <p th:each="category : ${article.categories}" th:text="${category.name}">categories</p>
-            <p th:each="writer : ${article.writers}" th:text="${writer.name}">authors</p>
-            <p th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</p>
-        </div>
-        <div class="list-group">
-            <h1>Most read</h1>
-            <a class="list-group-item" th:each="item : ${popular}" th:href='@{/news/{id}(id=${item.id})}'>
-                <h2 th:text="${item.headline}"></h2>
-                <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
-            </a>
-        </div>
-        <br/>
-        <div class="list-group">
-            <h1>Latest news</h1>
-            <a class="list-group-item" th:each="item : ${latest}" th:href='@{/news/{id}(id=${item.id})}'>
-                <h2 th:text="${item.headline}"></h2>
-                <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
-            </a>
+            <div class="col-md-8 border-right-0">
+                <h1 th:text="${article.headline}">headline</h1>
+                <img th:src="@{/images/{id}/content(id=${article.id})}"/>
+                <p>Updated <span th:text="${#temporals.format(article.publishDate, 'dd.MM.yyyy HH:mm')}">date</span></p><br/>
+                <p th:text="${article.bodyText}">text</p><br/>
+                <label>By <span th:each="writer : ${article.writers}" th:text="${writer.name} + ' '">authors</span></label><br/>
+                <label>Categories: </label><span th:each="category : ${article.categories}" th:text="${category.name} + ' '"> </span>
+            </div>
+            <div class="col-md-4">
+                <div class="list-group">
+                    <h1>Most popular</h1>
+                    <a class="list-group-item" th:each="item : ${popular}" th:href='@{/news/{id}(id=${item.id})}'>
+                        <h2 th:text="${item.headline}"></h2>
+                        <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
+                    </a>
+                </div>
+                <br/>
+                <div class="list-group">
+                    <h1>Latest news</h1>
+                    <a class="list-group-item" th:each="item : ${latest}" th:href='@{/news/{id}(id=${item.id})}'>
+                        <h2 th:text="${item.headline}"></h2>
+                        <p th:text="${#temporals.format(item.publishDate, 'HH:mm')}"></p>
+                    </a>
+                </div>
+            </div>
         </div>
     </body>
 </html>
