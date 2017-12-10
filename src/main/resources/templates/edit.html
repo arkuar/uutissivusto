@@ -19,19 +19,19 @@
                 <input type="hidden" th:value="${article.id}" name="id"/>
                 <div class="form-group">
                     <label>Headline:</label>
-                    <input th:value="${article.headline}" name="headline"/>
+                    <input th:value="${article.headline}" name="headline" required="required"/>
                 </div>
                 <div class="form-group">
                     <label>Lead paragraph:</label>
-                    <input th:value="${article.lead}" name="lead"/>
+                    <input th:value="${article.lead}" name="lead" required="required"/>
                 </div>
                 <div class="form-group">
                     <label>Text:</label><br/>
-                    <textarea class="form-control" rows="10" th:text="${article.bodyText}" name="bodytext"></textarea>
+                    <textarea class="form-control" rows="10" th:text="${article.bodyText}" name="bodytext" required="required"></textarea>
                 </div>
                 <div class="form-group">
                     <label>Publishing date:</label>
-                    <input th:value="${article.publishDate}" type="datetime-local" name="publishdate"/>
+                    <input th:value="${article.publishDate}" type="datetime-local" name="publishdate" required="required"/>
                 </div>
                 <div class="form-group">
                     <label>Image:</label>
