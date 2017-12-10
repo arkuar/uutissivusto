@@ -88,8 +88,7 @@ public class ArticleController {
     @GetMapping("/news/{id}/edit")
     @Transactional
     public String editArticle(@PathVariable Long id, Model model) {
-        Article article = articleRepository.getOne(id);
-        model.addAttribute("article", article);
+        model.addAttribute("article", articleRepository.getOne(id));
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());
         return "edit";

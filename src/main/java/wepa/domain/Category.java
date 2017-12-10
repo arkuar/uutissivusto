@@ -18,7 +18,7 @@ public class Category extends AbstractPersistable<Long> {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
     private List<Article> articles;
 
     public Category(String name) {

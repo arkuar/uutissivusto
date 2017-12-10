@@ -18,7 +18,7 @@ public class Author extends AbstractPersistable<Long> {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "writers")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "writers")
     private List<Article> articles;
 
     public Author(String name) {

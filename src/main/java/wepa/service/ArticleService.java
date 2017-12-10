@@ -29,10 +29,10 @@ public class ArticleService {
     private AuthorRepository authorRepository;
     @Autowired
     private ValidationService validationService;
-    
+
     @PostConstruct
-    public void init(){
-        if(categoryRepository.findAll().isEmpty() && authorRepository.findAll().isEmpty()){
+    public void init() {
+        if (categoryRepository.findAll().isEmpty() && authorRepository.findAll().isEmpty()) {
             categoryRepository.save(new Category("World"));
             categoryRepository.save(new Category("Sports"));
             authorRepository.save(new Author("James Writer"));
@@ -72,16 +72,19 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    @Transactional
     public void getMostPopular(Model model) {
         PageRequest req = PageRequest.of(0, 10, Sort.Direction.DESC, "count");
         model.addAttribute("popular", articleRepository.findAll(req));
     }
 
+    @Transactional
     public void getLatest(Model model) {
         PageRequest req = PageRequest.of(0, 5, Sort.Direction.DESC, "publishDate");
         model.addAttribute("latest", articleRepository.findAll(req));
     }
 
+    @Transactional
     public void getLatestAndPopular(Model model) {
         getLatest(model);
         getMostPopular(model);
