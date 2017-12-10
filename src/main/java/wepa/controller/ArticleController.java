@@ -30,10 +30,14 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
     
+    private static final String CATEGORIES = "categories";
+    private static final String ARTICLE = "article";
+    private static final String REDIRECT_NEWS = "redirect:/news/";
+    
     @GetMapping("/")
     public String index(Model model) {
         articleService.getLatest(model);
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         return "index";
     }
 
@@ -43,7 +47,7 @@ public class ArticleController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
             @RequestParam("file") MultipartFile file,
             @RequestParam("categoryId") Long[] categoryIds,
-            @RequestParam("authorId") Long[] authorIds) throws Exception {
+            @RequestParam("authorId") Long[] authorIds) throws IOException {
         articleService.add(requestParams, publishdate, file, categoryIds, authorIds);
         return "redirect:/";
     }
@@ -54,10 +58,10 @@ public class ArticleController {
         Article article = articleRepository.getOne(id);
         article.incrementCount();
         articleRepository.save(article);
-        model.addAttribute("article", articleRepository.getOne(id));
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(ARTICLE, articleRepository.getOne(id));
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         articleService.getLatestAndPopular(model);
-        return "article";
+        return ARTICLE;
     }
 
     @GetMapping(path = "/images/{id}/content", produces = "image/jpg")
@@ -68,12 +72,12 @@ public class ArticleController {
             Article article = articleRepository.getOne(id);
             return article.getImage();
         }
-        return null;
+        return new byte[0];
     }
 
     @GetMapping("/news/new")
     public String add(Model model) {
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());
         return "new";
     }
@@ -81,15 +85,15 @@ public class ArticleController {
     @GetMapping("/popular")
     public String mostPopular(Model model) {
         articleService.getMostPopular(model);
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         return "popular";
     }
 
     @GetMapping("/news/{id}/edit")
     @Transactional
     public String editArticle(@PathVariable Long id, Model model) {
-        model.addAttribute("article", articleRepository.getOne(id));
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(ARTICLE, articleRepository.getOne(id));
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         model.addAttribute("authors", authorRepository.findAll());
         return "edit";
     }
@@ -99,7 +103,7 @@ public class ArticleController {
     public String updateArticle(@PathVariable Long id, @RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
             @RequestParam("file") MultipartFile file) throws IOException {
         articleService.edit(id, requestParams, publishdate, file);
-        return "redirect:/news/" + id;
+        return REDIRECT_NEWS + id;
     }
 
     @PostMapping("/news/{id}/edit/category")
@@ -108,7 +112,7 @@ public class ArticleController {
         Article article = articleRepository.getOne(id);
         article.getCategories().add(categoryRepository.getOne(categoryId));
         articleRepository.save(article);
-        return "redirect:/news/" + id;
+        return REDIRECT_NEWS + id;
     }
 
     @PostMapping("/news/{id}/edit/author")
@@ -117,7 +121,7 @@ public class ArticleController {
         Article article = articleRepository.getOne(id);
         article.getWriters().add(authorRepository.getOne(authorId));
         articleRepository.save(article);
-        return "redirect:/news/" + id;
+        return REDIRECT_NEWS + id;
     }
 
     @PostMapping("/news/{id}/delete")
@@ -125,7 +129,7 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Long id, Model model) {
         articleRepository.deleteById(id);
         articleService.getLatest(model);
-        model.addAttribute("categories", categoryRepository.findAll());
+        model.addAttribute(CATEGORIES, categoryRepository.findAll());
         return "redirect:/";
     }
 }

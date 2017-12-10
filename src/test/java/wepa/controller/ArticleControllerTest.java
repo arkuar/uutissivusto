@@ -3,7 +3,6 @@ package wepa.controller;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +50,18 @@ public class ArticleControllerTest {
     }
 
     @Test
+    @Transactional
     public void statusOK() throws Exception {
+        Long id = articleRepository.save(new Article("Otsikko", "Ingressi", "0".getBytes(), "teksti", LocalDateTime.MIN)).getId();
         mockMvc.perform(get("/"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/news/" + id))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/images/" + id + "/content"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/news/new"))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/news/" + id + "/edit"))
                 .andExpect(status().isOk());
     }
 
@@ -86,6 +95,7 @@ public class ArticleControllerTest {
     @Test
     public void responseContainsMostPopular() throws Exception {
         mockMvc.perform(get("/popular"))
+                .andExpect(status().isOk())
                 .andExpect(model().attributeExists("popular"))
                 .andExpect(model().attributeExists("categories"));
     }
@@ -119,6 +129,42 @@ public class ArticleControllerTest {
         page = (Page) res.getModelAndView().getModel().get("popular");
         articles = page.getContent();
         assertTrue(articles.stream().allMatch(e -> e.getHeadline().equals("Otsikko")));
+    }
+
+    @Test
+    @Transactional
+    public void addCategoryToArticleShouldWork() throws Exception {
+        Long id = articleRepository.save(new Article()).getId();
+        Long categoryId = categoryRepository.save(new Category("Asd")).getId();
+        mockMvc.perform(post("/news/" + id + "/edit/category")
+                .param("categoryId", categoryId.toString()))
+                .andExpect(status().is3xxRedirection());
+
+        Article article = articleRepository.getOne(id);
+        assertTrue(article.getCategories().size() == 1);
+    }
+
+    @Test
+    @Transactional
+    public void addAuthorToArticleShouldWork() throws Exception {
+        Long id = articleRepository.save(new Article()).getId();
+        Long authorId = authorRepository.save(new Author("Author")).getId();
+        mockMvc.perform(post("/news/" + id + "/edit/author")
+                .param("authorId", authorId.toString()))
+                .andExpect(status().is3xxRedirection());
+
+        Article article = articleRepository.getOne(id);
+        assertTrue(article.getWriters().size() == 1);
+    }
+
+    @Test
+    @Transactional
+    public void deleteArticleShouldWork() throws Exception {
+        Long id = articleRepository.save(new Article()).getId();
+        mockMvc.perform(post("/news/" + id + "/delete"))
+                .andExpect(status().is3xxRedirection());
+        List<Article> articles = articleRepository.findAll();
+        assertTrue(articles.isEmpty());
     }
 
 }
