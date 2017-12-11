@@ -30,6 +30,10 @@ public class ArticleService {
     @Autowired
     private ValidationService validationService;
 
+    /*
+    * Jos tietokannassa ei ole mitään sovelluksen käynnistyessä, lisätään sinne
+    * hieman dataa.
+     */
     @PostConstruct
     public void init() {
         if (categoryRepository.findAll().isEmpty() && authorRepository.findAll().isEmpty()) {
@@ -40,6 +44,9 @@ public class ArticleService {
         }
     }
 
+    /*
+    * Lisää articleRepositoryyn uuden artikkelin annetuilla parametreilla.
+     */
     @Transactional
     public void add(Map<String, String> params, LocalDateTime publishdate, MultipartFile file,
             Long[] categoryIds, Long[] authorIds) throws IOException {
@@ -60,6 +67,10 @@ public class ArticleService {
         }
     }
 
+    /*
+    * Muokkaa articleRepositorysta jo löytyvää uutista asettamalla sille parametreina
+    * saadut arvot.
+     */
     public void edit(Long id, Map<String, String> params, LocalDateTime publishdate, MultipartFile file) throws IOException {
         Article article = articleRepository.getOne(id);
         article.setHeadline(params.get("headline"));
@@ -72,12 +83,18 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    /*
+    * Lisää modeliin 10 suosituinta uutista.
+     */
     @Transactional
     public void getMostPopular(Model model) {
         PageRequest req = PageRequest.of(0, 10, Sort.Direction.DESC, "count");
         model.addAttribute("popular", articleRepository.findAll(req));
     }
 
+    /*
+    * Lisää modeliin 5 viimeisintä uutista.
+     */
     @Transactional
     public void getLatest(Model model) {
         PageRequest req = PageRequest.of(0, 5, Sort.Direction.DESC, "publishDate");

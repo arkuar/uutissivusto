@@ -29,11 +29,11 @@ public class ArticleController {
     private AuthorRepository authorRepository;
     @Autowired
     private ArticleService articleService;
-    
+
     private static final String CATEGORIES = "categories";
     private static final String ARTICLE = "article";
     private static final String REDIRECT_NEWS = "redirect:/news/";
-    
+
     @GetMapping("/")
     public String index(Model model) {
         articleService.getLatest(model);
@@ -41,6 +41,10 @@ public class ArticleController {
         return "index";
     }
 
+    /*
+    * Lisää uutisen kutsumalla articleServicen add metodia.
+    * Parametreina uutisen tiedot.
+     */
     @PostMapping("/news")
     @Transactional
     public String addArticle(@RequestParam Map<String, String> requestParams,
@@ -52,6 +56,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    /*
+    * Palauttaa uutisen ja hakee articleServicen avulla listaukset
+     */
     @GetMapping("/news/{id}")
     @Transactional
     public String getOne(@PathVariable Long id, Model model) {
@@ -75,6 +82,9 @@ public class ArticleController {
         return new byte[0];
     }
 
+    /*
+    * Palauttaa uutisen lisäämiseen tarkoitetun näkymän.
+     */
     @GetMapping("/news/new")
     public String add(Model model) {
         model.addAttribute(CATEGORIES, categoryRepository.findAll());
@@ -82,6 +92,9 @@ public class ArticleController {
         return "new";
     }
 
+    /*
+    * Palauttaa listauksen suosituimmista uutisista.
+     */
     @GetMapping("/popular")
     public String mostPopular(Model model) {
         articleService.getMostPopular(model);
@@ -89,6 +102,9 @@ public class ArticleController {
         return "popular";
     }
 
+    /*
+    * Palauttaa uutisen muokkaukseen tarkoitetun näkymän. 
+     */
     @GetMapping("/news/{id}/edit")
     @Transactional
     public String editArticle(@PathVariable Long id, Model model) {
@@ -98,6 +114,10 @@ public class ArticleController {
         return "edit";
     }
 
+    /*
+    * Muokkaa uutista kutsumalla articleServicen edit metodia.
+    * Parametreina uutisen tiedot.
+     */
     @PostMapping("/news/{id}/edit")
     @Transactional
     public String updateArticle(@PathVariable Long id, @RequestParam Map<String, String> requestParams, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime publishdate,
@@ -106,6 +126,9 @@ public class ArticleController {
         return REDIRECT_NEWS + id;
     }
 
+    /*
+    * Lisää uutiselle kategorian.
+     */
     @PostMapping("/news/{id}/edit/category")
     @Transactional
     public String addCategoryToArticle(@RequestParam Long categoryId, @PathVariable Long id) {
@@ -115,6 +138,9 @@ public class ArticleController {
         return REDIRECT_NEWS + id;
     }
 
+    /*
+    * Lisää uutiselle kirjoittajan.
+     */
     @PostMapping("/news/{id}/edit/author")
     @Transactional
     public String addAuthorToArticle(@RequestParam Long authorId, @PathVariable Long id) {
@@ -124,6 +150,9 @@ public class ArticleController {
         return REDIRECT_NEWS + id;
     }
 
+    /*
+    * Poistaa uutisen.
+     */
     @PostMapping("/news/{id}/delete")
     @Transactional
     public String deleteArticle(@PathVariable Long id, Model model) {

@@ -15,6 +15,9 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    /*
+    * Palauttaa kategoriaan kuuluvat uutiset.
+     */
     @GetMapping("/{name}")
     @Transactional
     public String getNewsInCategory(@PathVariable String name, Model model) {
